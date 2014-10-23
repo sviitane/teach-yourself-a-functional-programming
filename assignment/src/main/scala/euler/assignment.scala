@@ -12,7 +12,20 @@ object ProjectEuler {
    * By considering the terms in the Fibonacci sequence whose values do not
    * exceed four million, find the sum of the even-valued terms.
    */
-  def problem2(): Int = ???
+   def problem2(): Int = {
+	  def fib(sum:Int, a:Int, b:Int): Int = {
+	    if(sum<4000000){
+	      if((a+b) % 2 == 0){
+	        fib(sum + (a+b), b, (a+b))
+	      }else{
+	    	fib(sum, b, (a+b))
+	      }
+	    }else{
+	      sum
+	    }
+	  }
+	  fib(0,0,1)
+	}
 
   /*
    * Largest palindrome product
@@ -23,7 +36,20 @@ object ProjectEuler {
    * Find the largest palindrome made from the product of two 3-digit numbers.
    *
    */
-  def problem4(): Int = ???
+  	def problem4(): Int = {
+	  def pal(min: Int, max: Int): Int = {
+	  val r = (min to max).view
+			  // Flatten map so it puts the values in a single list instead of making a listOfListOfInts
+			  .flatMap(i => (i to max).map(i *))
+			  // Filter only the ones that are palendromes in the list
+			  .filter(n => n.toString == n.toString.reverse)
+			  // Return the biggest value in the list
+			  .max
+			  
+			  r
+	  }
+	  pal(100, 999)
+	}
 
   /*
    * Special Pythagorean triplet
@@ -36,10 +62,22 @@ object ProjectEuler {
    * There exists exactly one Pythagorean triplet for which a + b + c = 1000.
    * Find the product abc.
    */
-  def problem9(): Int = ???
-
-
-  /*
+	def problem9(): Int = {
+	  def triplet(max: Int): Int = {
+		  // We can make a for comprehension where a starts from one to b, and 
+		  // b starts from 2 to 1000 and c is 1000 - a - b and also check if
+		  // a^2 + b^2 == c^2, if this is true, we add a*b*c to the list triplets
+		  val triplets = for(b <- 2 to max; a <- 1 to b; c = max - a - b
+	             if a * a + b * b  == c * c) yield a * b * c
+	
+	      // Since there is only one element in our list, we can just call head, but this only works in this case
+	      val t = triplets.head
+	      
+	      t
+	  }
+	  triplet(1000)
+	} 
+	/*
    * Maximum path sum I
    *
    * By starting at the top of the triangle below and moving to adjacent numbers
